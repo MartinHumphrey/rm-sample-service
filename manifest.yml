@@ -1,7 +1,6 @@
 ---
 applications:
 - name: samplesvc
-  buildpack: https://github.com/cloudfoundry/java-buildpack.git
   instances: 1
   host: samplesvc
   memory: 1024
