@@ -34,6 +34,10 @@
    </bean>
 
     <!-- Start of Queues -->
+    <rabbit:queue id="daveQ"/>
+      <rabbit:queue id="barryQ"/>
+    
+    
     <rabbit:queue name="Sample.Party" durable="true">
         <rabbit:queue-arguments value-type="java.lang.String">
             <entry key="x-dead-letter-exchange" value="sample-deadletter-exchange" />
@@ -51,6 +55,8 @@
     <!-- End of Queues -->
 
     <!-- Start of Exchanges -->
+    <rabbit:fanout-exchange id="sample-message-outbound-exchange" name="sample-message-outbound-exchange"/>
+
     <rabbit:direct-exchange name="sample-party-outbound-exchange">
         <rabbit:bindings>
             <rabbit:binding queue="Sample.Party" key="Sample.Party.binding" />

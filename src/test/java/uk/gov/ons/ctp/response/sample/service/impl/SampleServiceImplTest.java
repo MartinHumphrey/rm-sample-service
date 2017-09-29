@@ -35,6 +35,7 @@ import uk.gov.ons.ctp.response.sample.domain.model.SampleUnit;
 import uk.gov.ons.ctp.response.sample.domain.repository.SampleSummaryRepository;
 import uk.gov.ons.ctp.response.sample.domain.repository.SampleUnitRepository;
 import uk.gov.ons.ctp.response.sample.message.PartyPublisher;
+import uk.gov.ons.ctp.response.sample.message.SampleEventMessager;
 import uk.gov.ons.ctp.response.sample.representation.SampleSummaryDTO;
 import uk.gov.ons.ctp.response.sample.representation.SampleSummaryDTO.SampleEvent;
 import uk.gov.ons.ctp.response.sample.representation.SampleSummaryDTO.SampleState;
@@ -80,6 +81,9 @@ public class SampleServiceImplTest {
 
   @Mock
   private CollectionExerciseJobService collectionExerciseJobService;
+
+  @Mock
+  private SampleEventMessager sampleEventMessager;
 
   @InjectMocks
   private SampleServiceImpl sampleServiceImpl;

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-amqp="http://www.springframework.org/schema/integration/amqp"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+  http://www.springframework.org/schema/rabbit
+  http://www.springframework.org/schema/rabbit/spring-rabbit-1.6.xsd
+  http://www.springframework.org/schema/integration
+  http://www.springframework.org/schema/integration/spring-integration.xsd
+  http://www.springframework.org/schema/integration/amqp
+  http://www.springframework.org/schema/integration/amqp/spring-integration-amqp.xsd
+  http://www.springframework.org/schema/integration/xml
+  http://www.springframework.org/schema/integration/xml/spring-integration-xml.xsd">
+
+<rabbit:admin connection-factory="connectionFactory" />
+
+
+    <int:gateway id="dataSender" service-interface="uk.gov.ons.ctp.response.sample.message.SampleEventMessager" default-request-channel="messageOutput" />
+
+    <rabbit:template id="amqpTemplate" connection-factory="connectionFactory" exchange="sample-message-outbound-exchange"
+                       channel-transacted="true"/>
+    
+    <int-amqp:publish-subscribe-channel id="messageOutput" connection-factory="connectionFactory"/>
+    
+    <int-amqp:outbound-channel-adapter channel="messageOutput"
+amqp-template="amqpTemplate" exchange-name="sample-message-outbound-exchange" routing-key="sample-message-outbound-exchange.binding" />
+
+    <!-- subscriber -->
+        
+
+    <rabbit:fanout-exchange id="sample-message-outbound-exchange" name="sample-message-outbound-exchange" >
+        <rabbit:bindings>
+            <rabbit:binding queue="barryQ" />
+        </rabbit:bindings>
+    </rabbit:fanout-exchange>
+
+    <rabbit:fanout-exchange id="sample-message-outbound-exchange" name="sample-message-outbound-exchange" >
+        <rabbit:bindings>
+            <rabbit:binding queue="daveQ" />
+        </rabbit:bindings>
+    </rabbit:fanout-exchange>
+
+
+     <int-amqp:inbound-channel-adapter channel="fromDaveQ"
+        queue-names="#{@daveQ.name}"
+        connection-factory="connectionFactory" />
+
+
+    
+        
+    <int:service-activator id="Listerner1" input-channel="fromDaveQ" ref="dave" method="makeCoffee"/>
+
+
+    <bean id="dave" class="uk.gov.ons.ctp.response.sample.message.SubMessage">
+        <constructor-arg value="dave"/>
+    </bean>
+
+    <int-amqp:inbound-channel-adapter channel="fromBarryQ"
+        queue-names="#{@barryQ.name}"
+        connection-factory="connectionFactory" />
+    
+    <int:service-activator id="Listerner2" input-channel="fromBarryQ" ref="barry" method="makeCoffee"/>
+
+
+    <bean id="barry" class="uk.gov.ons.ctp.response.sample.message.SubMessage">
+        <constructor-arg value="barry"/>
+    </bean>
+
+
+</beans>

@@ -25,6 +25,7 @@ import uk.gov.ons.ctp.response.sample.domain.model.SampleUnit;
 import uk.gov.ons.ctp.response.sample.domain.repository.SampleSummaryRepository;
 import uk.gov.ons.ctp.response.sample.domain.repository.SampleUnitRepository;
 import uk.gov.ons.ctp.response.sample.message.PartyPublisher;
+import uk.gov.ons.ctp.response.sample.message.SampleEventMessager;
 import uk.gov.ons.ctp.response.sample.party.PartyUtil;
 import uk.gov.ons.ctp.response.sample.representation.SampleSummaryDTO;
 import uk.gov.ons.ctp.response.sample.representation.SampleUnitDTO;
@@ -61,6 +62,10 @@ public class SampleServiceImpl implements SampleService {
 
   @Autowired
   private CollectionExerciseJobService collectionExerciseJobService;
+
+  @Autowired
+  private SampleEventMessager sampleEventMessager;
+
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
@@ -123,12 +128,17 @@ public class SampleServiceImpl implements SampleService {
     SampleSummaryDTO.SampleState newState = sampleSvcStateTransitionManager.transition(targetSampleSummary.getState(),
             SampleSummaryDTO.SampleEvent.ACTIVATED);
     targetSampleSummary.setState(newState);
+    //sampleEventMessager.send("hello world");
     sampleSummaryRepository.saveAndFlush(targetSampleSummary);
+    
+    
+    //system.out.println("hello sent");
     return targetSampleSummary;
   }
 
   public void sendToPartyService(Party party) throws Exception {
     log.debug("Send to party svc");
+    sampleEventMessager.send("hello world");
     PartyCreationRequestDTO partyCreationRequestDTO = PartyUtil.createPartyCreationRequestDTO(party);
     PartyDTO returnedParty = partySvcClient.postParty(partyCreationRequestDTO);
     log.info("Returned party is {}", returnedParty);
