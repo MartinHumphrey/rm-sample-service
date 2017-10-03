@@ -35,7 +35,7 @@
 
     <!-- Start of Queues -->
     <rabbit:queue id="daveQ"/>
-      <rabbit:queue id="barryQ"/>
+    <rabbit:queue id="barryQ"/>
     
     
     <rabbit:queue name="Sample.Party" durable="true">

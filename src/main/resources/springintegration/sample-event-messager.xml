@@ -29,7 +29,6 @@
 amqp-template="amqpTemplate" exchange-name="sample-message-outbound-exchange" routing-key="sample-message-outbound-exchange.binding" />
 
     <!-- subscriber -->
-        
 
     <rabbit:fanout-exchange id="sample-message-outbound-exchange" name="sample-message-outbound-exchange" >
         <rabbit:bindings>
@@ -48,9 +47,6 @@ amqp-template="amqpTemplate" exchange-name="sample-message-outbound-exchange" ro
         queue-names="#{@daveQ.name}"
         connection-factory="connectionFactory" />
 
-
-    
-        
     <int:service-activator id="Listerner1" input-channel="fromDaveQ" ref="dave" method="makeCoffee"/>
 
 

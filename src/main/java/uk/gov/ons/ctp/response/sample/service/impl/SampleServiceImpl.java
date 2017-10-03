@@ -128,17 +128,15 @@ public class SampleServiceImpl implements SampleService {
     SampleSummaryDTO.SampleState newState = sampleSvcStateTransitionManager.transition(targetSampleSummary.getState(),
             SampleSummaryDTO.SampleEvent.ACTIVATED);
     targetSampleSummary.setState(newState);
-    //sampleEventMessager.send("hello world");
+    sampleEventMessager.send("Hello from Sample");
     sampleSummaryRepository.saveAndFlush(targetSampleSummary);
-    
-    
-    //system.out.println("hello sent");
+
     return targetSampleSummary;
   }
 
   public void sendToPartyService(Party party) throws Exception {
     log.debug("Send to party svc");
-    sampleEventMessager.send("hello world");
+    
     PartyCreationRequestDTO partyCreationRequestDTO = PartyUtil.createPartyCreationRequestDTO(party);
     PartyDTO returnedParty = partySvcClient.postParty(partyCreationRequestDTO);
     log.info("Returned party is {}", returnedParty);

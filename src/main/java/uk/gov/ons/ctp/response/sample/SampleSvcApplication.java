@@ -85,17 +85,6 @@ public class SampleSvcApplication {
     return Redisson.create(config);
   }
 
-
-  /**
-   * The SampleService client bean
-   * @return the RestClient for the SampleService
-   */
-//  @Bean
-//  public FanoutExchange MessageSvcClient() {
-//    
-//    return new FanoutExchange("sample-message-outbound-exchange");
-//  }
-
   /**
    * The SampleService client bean
    * @return the RestClient for the SampleService
