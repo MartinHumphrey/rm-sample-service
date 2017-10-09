@@ -78,8 +78,8 @@ party-svc:
     scheme: http
     host: ras-party-service-ci.apps.devtest.onsclofo.uk
     port: 80
-    username: sdc.ci
-    password: lassie.radar.consume.gods.beef.noll
+    username: admin
+    password: password
     retry-attempts: 1
     retry-pause-milli-seconds: 5000
     connect-timeout-milli-seconds: 5000

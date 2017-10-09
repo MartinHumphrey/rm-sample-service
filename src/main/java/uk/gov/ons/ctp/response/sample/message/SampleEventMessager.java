@@ -12,6 +12,4 @@ public interface SampleEventMessager {
      * @param sampleUnit to be sent
      */
   String send(String event);
-  
-  String receive();
 }

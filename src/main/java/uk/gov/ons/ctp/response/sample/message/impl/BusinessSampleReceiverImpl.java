@@ -13,6 +13,7 @@ import uk.gov.ons.ctp.response.sample.definition.BusinessSurveySample;
 import uk.gov.ons.ctp.response.sample.message.SampleReceiver;
 import uk.gov.ons.ctp.response.sample.service.SampleReportService;
 import uk.gov.ons.ctp.response.sample.service.SampleService;
+import uk.gov.ons.ctp.common.events.EventExchange;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,9 @@ public class BusinessSampleReceiverImpl implements SampleReceiver<BusinessSurvey
   
   @Autowired
   private SampleReportService sampleReportService;
+  
+  @Autowired
+  private EventExchange eventExchange;
 
   /**
    * To process BusinessSurveySample transformed from XML
@@ -43,6 +47,7 @@ public class BusinessSampleReceiverImpl implements SampleReceiver<BusinessSurvey
                                        @Headers Map<String, Object> headerMap) throws Exception {
     log.debug("BusinessSurveySample (Collection Exercise Ref: {}) transformed successfully.",
         businessSurveySample.getCollectionExerciseRef());
+    
     List<BusinessSampleUnit> samplingUnitList = businessSurveySample.getSampleUnits().getBusinessSampleUnits();
     sampleService.processSampleSummary(businessSurveySample, samplingUnitList);
 
@@ -50,6 +55,7 @@ public class BusinessSampleReceiverImpl implements SampleReceiver<BusinessSurvey
     String fileName = (String) headerMap.get("file_name");
     final Message<String> message = MessageBuilder.withPayload(load).setHeader("file_name", fileName).build();
     sampleReportService.createReport();
+    //eventExchange.send("rename file");
     return message;
   }
 

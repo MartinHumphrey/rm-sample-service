@@ -12,7 +12,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import uk.gov.ons.ctp.common.events.EventExchange;
 import uk.gov.ons.ctp.response.sample.definition.BusinessSampleUnit;
 import uk.gov.ons.ctp.response.sample.definition.BusinessSurveySample;
 import uk.gov.ons.ctp.response.sample.message.impl.BusinessSampleReceiverImpl;
@@ -37,6 +39,9 @@ public class BusinessSampleReceiverImplTest {
 	
 	@Mock
 	private SampleReportService sampleReportService;
+	
+  @Mock
+  private EventExchange eventExchange;
 
 	@Test
 	public void TestProcessSample() throws Exception {

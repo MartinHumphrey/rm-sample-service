@@ -63,8 +63,8 @@ public class SampleServiceImpl implements SampleService {
   @Autowired
   private CollectionExerciseJobService collectionExerciseJobService;
 
-  @Autowired
-  private SampleEventMessager sampleEventMessager;
+  //@Autowired
+  //private SampleEventMessager sampleEventMessager;
 
 
   @Override
@@ -128,7 +128,7 @@ public class SampleServiceImpl implements SampleService {
     SampleSummaryDTO.SampleState newState = sampleSvcStateTransitionManager.transition(targetSampleSummary.getState(),
             SampleSummaryDTO.SampleEvent.ACTIVATED);
     targetSampleSummary.setState(newState);
-    sampleEventMessager.send("Hello from Sample");
+    //sampleEventMessager.send("Hello from Sample");
     sampleSummaryRepository.saveAndFlush(targetSampleSummary);
 
     return targetSampleSummary;

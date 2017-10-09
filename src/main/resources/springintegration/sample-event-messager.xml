@@ -18,52 +18,14 @@
 <rabbit:admin connection-factory="connectionFactory" />
 
 
-    <int:gateway id="dataSender" service-interface="uk.gov.ons.ctp.response.sample.message.SampleEventMessager" default-request-channel="messageOutput" />
+    <int:gateway id="dataSender" service-interface="uk.gov.ons.ctp.common.events.EventExchange" default-request-channel="messageOutput" />
 
-    <rabbit:template id="amqpTemplate" connection-factory="connectionFactory" exchange="sample-message-outbound-exchange"
+    <rabbit:template id="amqpTemplate" connection-factory="connectionFactory" exchange="event-message-outbound-exchange"
                        channel-transacted="true"/>
     
     <int-amqp:publish-subscribe-channel id="messageOutput" connection-factory="connectionFactory"/>
     
     <int-amqp:outbound-channel-adapter channel="messageOutput"
-amqp-template="amqpTemplate" exchange-name="sample-message-outbound-exchange" routing-key="sample-message-outbound-exchange.binding" />
-
-    <!-- subscriber -->
-
-    <rabbit:fanout-exchange id="sample-message-outbound-exchange" name="sample-message-outbound-exchange" >
-        <rabbit:bindings>
-            <rabbit:binding queue="barryQ" />
-        </rabbit:bindings>
-    </rabbit:fanout-exchange>
-
-    <rabbit:fanout-exchange id="sample-message-outbound-exchange" name="sample-message-outbound-exchange" >
-        <rabbit:bindings>
-            <rabbit:binding queue="daveQ" />
-        </rabbit:bindings>
-    </rabbit:fanout-exchange>
-
-
-     <int-amqp:inbound-channel-adapter channel="fromDaveQ"
-        queue-names="#{@daveQ.name}"
-        connection-factory="connectionFactory" />
-
-    <int:service-activator id="Listerner1" input-channel="fromDaveQ" ref="dave" method="makeCoffee"/>
-
-
-    <bean id="dave" class="uk.gov.ons.ctp.response.sample.message.SubMessage">
-        <constructor-arg value="dave"/>
-    </bean>
-
-    <int-amqp:inbound-channel-adapter channel="fromBarryQ"
-        queue-names="#{@barryQ.name}"
-        connection-factory="connectionFactory" />
-    
-    <int:service-activator id="Listerner2" input-channel="fromBarryQ" ref="barry" method="makeCoffee"/>
-
-
-    <bean id="barry" class="uk.gov.ons.ctp.response.sample.message.SubMessage">
-        <constructor-arg value="barry"/>
-    </bean>
-
+amqp-template="amqpTemplate" exchange-name="event-message-outbound-exchange" routing-key="event-message-outbound-exchange" />
 
 </beans>
