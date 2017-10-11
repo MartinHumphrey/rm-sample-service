@@ -1,3 +1,7 @@
 spring:
   application:
     name: SampleService
+  cloud:
+    vault:
+      token:
+      scheme: http

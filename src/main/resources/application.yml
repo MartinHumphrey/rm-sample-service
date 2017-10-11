@@ -54,7 +54,7 @@ spring:
     name: ONS SampleService
   datasource:
     url: jdbc:postgresql://localhost:6432/postgres
-    username: samplesvc
+   # username: samplesvc
     password: samplesvc
     driverClassName: org.postgresql.Driver
     tomcat:
@@ -139,3 +139,6 @@ swagger-settings:
 retries:
   maxAttempts: 3
   backoff: 5000
+
+vault:
+  uri: http://localhots:8200/
